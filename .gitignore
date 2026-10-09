@@ -4,4 +4,6 @@
 **/local/
 **/library/
 **/.DS_Store
+**/.Logs/
+**/.vscode/
 tool/PSD_Parser-master/
