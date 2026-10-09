@@ -1,0 +1,7 @@
+**/res/
+**/.*_PList.Dir
+**/temp/
+**/local/
+**/library/
+**/.DS_Store
+tool/PSD_Parser-master/
