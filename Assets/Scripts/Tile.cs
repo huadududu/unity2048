@@ -1,0 +1,90 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+public class Tile : MonoBehaviour
+{
+
+    [HideInInspector]
+    public TileState state;// 状态
+
+    [HideInInspector]
+    public TileCell cell;
+
+    [HideInInspector]
+    public bool locked;
+
+    public Image imgBackground;
+    public TextMeshProUGUI txtNumber;
+
+
+    public void SetState(TileState state){
+        this.state = state;
+        imgBackground.color = state.backgroundColor;
+        txtNumber.color = state.textColor;
+        txtNumber.text = Mathf.Pow(2, state.index).ToString();
+    }
+
+    public void LinkCell(TileCell cell){
+        if(this.cell != null){
+            this.cell.tile = null;
+        }
+        this.cell = cell;
+        this.cell.tile = this;
+        transform.position = cell.transform.position;
+        Debug.LogFormat("test postion:{0}, {1}", transform.position.x, transform.position.y);
+        // Debug.LogFormat("test postion:{0}", transform.position.x);
+    }
+
+    public void MoveTo(TileCell cell){
+        if(this.cell != null){
+            this.cell.tile = null;
+        }
+
+        this.cell = cell;
+        this.cell.tile = this;
+
+        StartCoroutine(MoveAnimate(cell.transform.position, false));
+
+    }
+
+    public void Merge( TileCell cell){
+        if(this.cell != null){
+            this.cell.tile = null;
+        }
+        this.cell = null;
+        cell.tile.locked = true;
+        StartCoroutine(MoveAnimate(cell.transform.position, true));
+
+    }
+
+    private IEnumerator MoveAnimate(Vector3 to, bool merging){
+    
+        float elapsed = 0f;
+        float duration = 0.1f;
+        Vector3 from = transform.position;
+
+        while (elapsed < duration){
+            transform.position = Vector3.Lerp(from, to, elapsed/duration);
+            elapsed +=Time.deltaTime;
+            yield return null;
+        }
+        transform.position = to;
+        if (merging){
+            Destroy(gameObject);
+        }
+    }
+
+    // // Start is called before the first frame update
+    // void Start()
+    // {
+        
+    // }
+
+    // // Update is called once per frame
+    // void Update()
+    // {
+        
+    // }
+}
