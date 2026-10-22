@@ -1,24 +1,24 @@
 // using System.Collections;
 // using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu( menuName = "TileState")]
+[CreateAssetMenu(menuName = "TileState")]
 public class TileState : ScriptableObject
 {
 
     public Color backgroundColor;
     public Color textColor;
-    public int number;
+    // public int number;
     public int index;
 
     // Start is called before the first frame update
     // void Start()
     // {
-        
+
     // }
 
     // // Update is called once per frame
     // void Update()
     // {
-        
+
     // }
 }

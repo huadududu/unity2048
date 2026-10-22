@@ -5,7 +5,7 @@ using UnityEngine;
 public class TileRow : MonoBehaviour
 {
 
-    public TileCell[] cells ;//
+    public TileCell[] cells;//
 
 
 

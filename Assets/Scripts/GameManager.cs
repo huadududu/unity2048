@@ -5,12 +5,14 @@ using UnityEngine.UI;
 using TMPro;
 public class GameManager : MonoBehaviour
 {
-
     private static GameManager _instance;
 
-    public static GameManager Instance{
-        get{
-            if (_instance == null){
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
                 _instance = FindAnyObjectByType<GameManager>();
             }
             return _instance;
@@ -20,41 +22,70 @@ public class GameManager : MonoBehaviour
     public CanvasGroup gameOver;
     public TextMeshProUGUI txtScore;
     public TextMeshProUGUI bestScoreText;
-    private int score = 0;
+    public GameObject continueNode;
+    public int score { get; private set; }
 
 
-    public void NewGame(){
+    private int maxStateIndex = 0;
+
+
+
+    public void NewGame()
+    {
         SetScore(0);
+        // UpdateMaxStateIndex(2);
+        this.maxStateIndex = 2;
 
         bestScoreText.text = LoadHiScore().ToString();
-        
+
         gameOver.alpha = 0f;
         gameOver.interactable = false;
         // gameOver.enabled = false;
         board.ClearBoard();
+        // board.CreateTile(0, 0, 0);
+        // board.CreateTile(2, 0, 0);
+        // board.CreateTile(3, 0, 1);
+        board.CreateTile();
         board.CreateTile();
         board.CreateTile();
         board.enabled = true;
-        Debug.Log("test start");
+        // continueNode.SetActive(true);
+        // Debug.Log("test start");
         //test
     }
 
-    public void GameOver(){
+    //继续游戏
+    public void ContinueGame()
+    {
+        continueNode.SetActive(false);
+        board.ClearLowTile();
+        gameOver.interactable = false;
+        gameOver.alpha = 0f;
+        board.enabled = true;
+
+    }
+
+    public void GameOver()
+    {
         board.enabled = false;
         gameOver.interactable = true;
         PlayerPrefs.Save();
-        Debug.Log("test gameover");
+        // Debug.Log("test gameover");
         StartCoroutine(Fade(gameOver, 1f, 1f));
+        continueNode.SetActive(true);
     }
 
-    private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay){
+    private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay)
+    {
         yield return new WaitForSeconds(delay);
         float elapsed = 0f;
         float duration = 0.5f;
         float from = canvasGroup.alpha;
 
-        while(elapsed < duration){
-            canvasGroup.alpha = Mathf.Lerp(from, to, elapsed/duration);
+        while (elapsed < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(from, to, elapsed / duration);
+            print(canvasGroup.alpha);
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -62,24 +93,45 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void IncreaseScore(int point){
+    public void UpdateMaxStateIndex(int stateIndex)
+    {
+        this.maxStateIndex = Mathf.Max(this.maxStateIndex, stateIndex);
+    }
+
+    public int getCreateStateIndex()
+    {
+        if (this.maxStateIndex >= 8)
+        {
+            return this.maxStateIndex - 5;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+    public void IncreaseScore(int point)
+    {
         SetScore(score + point);
     }
 
-    private void SetScore(int score){
+    private void SetScore(int score)
+    {
         this.score = score;
         txtScore.text = score.ToString();
         SaveHiscore();
     }
 
-    private void SaveHiscore(){
+    private void SaveHiscore()
+    {
         int hiscore = LoadHiScore();
-        if(score > hiscore){
+        if (score > hiscore)
+        {
             PlayerPrefs.SetInt("hiscore", score);
         }
     }
 
-    private int LoadHiScore(){
+    private int LoadHiScore()
+    {
         return PlayerPrefs.GetInt("hiscore", 0);
 
     }
@@ -88,12 +140,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         NewGame();
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -19,26 +19,31 @@ public class Tile : MonoBehaviour
     public TextMeshProUGUI txtNumber;
 
 
-    public void SetState(TileState state){
+    public void SetState(TileState state)
+    {
         this.state = state;
         imgBackground.color = state.backgroundColor;
         txtNumber.color = state.textColor;
         txtNumber.text = Mathf.Pow(2, state.index).ToString();
     }
 
-    public void LinkCell(TileCell cell){
-        if(this.cell != null){
+    public void LinkCell(TileCell cell)
+    {
+        if (this.cell != null)
+        {
             this.cell.tile = null;
         }
         this.cell = cell;
         this.cell.tile = this;
         transform.position = cell.transform.position;
-        Debug.LogFormat("test postion:{0}, {1}", transform.position.x, transform.position.y);
+        // Debug.LogFormat("test postion:{0}, {1}", transform.position.x, transform.position.y);
         // Debug.LogFormat("test postion:{0}", transform.position.x);
     }
 
-    public void MoveTo(TileCell cell){
-        if(this.cell != null){
+    public void MoveTo(TileCell cell)
+    {
+        if (this.cell != null)
+        {
             this.cell.tile = null;
         }
 
@@ -49,8 +54,10 @@ public class Tile : MonoBehaviour
 
     }
 
-    public void Merge( TileCell cell){
-        if(this.cell != null){
+    public void Merge(TileCell cell)
+    {
+        if (this.cell != null)
+        {
             this.cell.tile = null;
         }
         this.cell = null;
@@ -59,32 +66,36 @@ public class Tile : MonoBehaviour
 
     }
 
-    private IEnumerator MoveAnimate(Vector3 to, bool merging){
-    
+    private IEnumerator MoveAnimate(Vector3 to, bool merging)
+    {
+
         float elapsed = 0f;
         float duration = 0.1f;
         Vector3 from = transform.position;
 
-        while (elapsed < duration){
-            transform.position = Vector3.Lerp(from, to, elapsed/duration);
-            elapsed +=Time.deltaTime;
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(from, to, elapsed / duration);
+            elapsed += Time.deltaTime;
             yield return null;
         }
         transform.position = to;
-        if (merging){
-            Destroy(gameObject);
+        if (merging)
+        {
+            GameManager.Instance.board.FreeTile(gameObject);
+            // Destroy(gameObject);
         }
     }
 
     // // Start is called before the first frame update
     // void Start()
     // {
-        
+
     // }
 
     // // Update is called once per frame
     // void Update()
     // {
-        
+
     // }
 }
