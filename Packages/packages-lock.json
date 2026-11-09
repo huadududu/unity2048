@@ -13,7 +13,7 @@
       }
     },
     "cn.tuanjie.codely.bridge": {
-      "version": "1.0.85",
+      "version": "1.0.87",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -21,6 +21,13 @@
         "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.tuanjie.cn"
+    },
+    "com.qq.weixin.minigame": {
+      "version": "https://gitee.com/wechat-minigame/minigame-tuanjie-transform-sdk.git#v0.1.32",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f67e7851c345f514e9079819cae16273ff05b33c"
     },
     "com.unity.2d.animation": {
       "version": "9.2.0",
@@ -115,6 +122,20 @@
         "com.unity.2d.tilemap": "1.0.0",
         "com.unity.modules.tilemap": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.tuanjie.cn"
+    },
+    "com.unity.addressables": {
+      "version": "1.21.21",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.scriptablebuildpipeline": "1.21.21",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
       },
       "url": "https://packages.tuanjie.cn"
     },
@@ -222,6 +243,13 @@
     },
     "com.unity.performance.profile-analyzer": {
       "version": "1.2.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.tuanjie.cn"
+    },
+    "com.unity.scriptablebuildpipeline": {
+      "version": "1.21.25",
       "depth": 1,
       "source": "registry",
       "dependencies": {},

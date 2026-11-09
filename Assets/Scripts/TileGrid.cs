@@ -55,19 +55,20 @@ public class TileGrid : MonoBehaviour
         coordinates.y -= direction.y;
         return GetCell(coordinates);
     }
+    /// <summary>
+    /// 获取一个随机空单元格
+    /// 为了性能优化，直接返回第一个空单元格，而不是创建列表
+    /// 在游戏运行过程中，空单元格数量会越来越少，返回第一个空单元格效率更高
+    /// </summary>
+    /// <returns>空单元格或 null</returns>
     public TileCell getRandomEmptyCell()
     {
-        List<TileCell> emptyCells = new List<TileCell>();
         foreach (var cell in cells)
         {
             if (cell.IsEmpty())
             {
-                emptyCells.Add(cell);
+                return cell;
             }
-        }
-        if (emptyCells.Count >= 1)
-        {
-            return emptyCells[Random.Range(0, emptyCells.Count)];
         }
         return null;
     }

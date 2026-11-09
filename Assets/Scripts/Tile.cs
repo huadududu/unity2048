@@ -27,6 +27,10 @@ public class Tile : MonoBehaviour
         txtNumber.text = Mathf.Pow(2, state.index).ToString();
     }
 
+    /// <summary>
+    /// 将 tile 链接到单元格
+    /// 优化：移动后更新空单元格缓存
+    /// </summary>
     public void LinkCell(TileCell cell)
     {
         if (this.cell != null)
@@ -36,6 +40,7 @@ public class Tile : MonoBehaviour
         this.cell = cell;
         this.cell.tile = this;
         transform.position = cell.transform.position;
+
         // Debug.LogFormat("test postion:{0}, {1}", transform.position.x, transform.position.y);
         // Debug.LogFormat("test postion:{0}", transform.position.x);
     }

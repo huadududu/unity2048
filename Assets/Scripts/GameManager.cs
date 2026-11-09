@@ -137,10 +137,18 @@ public class GameManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    // 等 Addressables 异步加载完成后再开始游戏
+    private IEnumerator Start()
     {
-        NewGame();
+        yield return board.InitializeAsync();
 
+        if (!board.IsReady)
+        {
+            Debug.LogError("[GameManager] 棋盘资源未就绪，游戏未启动。");
+            yield break;
+        }
+
+        NewGame();
     }
 
     // Update is called once per frame

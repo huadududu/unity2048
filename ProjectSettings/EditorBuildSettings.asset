@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/2048.scene
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  m_BuildProfiles:
+  - enabled: 1
+    path: Assets/Settings/Build Profiles/New WeChat Profile.asset
+    guid: c04f7d22fd9a84482953f312468d26ce
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 85f8b1f888964434b88915d4bd8d0052, type: 2}
+  m_SlimFeaturesWeixinMiniGame:
+    ACLDecompression: 0
+    AllocateOverhead: 1
+    DecompressASTC: 0
+    DecompressDXT: 0
+    DecompressETC: 1
+    FreeTypeSfntPng: 1
+    LightProbe: 2
+    RootMotion: 0
+    UseStringInternPool: 2

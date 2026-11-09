@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class TileBoard : MonoBehaviour
 {
+    // Addressables 中配置的地址与标签，编辑器脚本 AddressablesSetup 会写入同样的值。
+    public const string TilePrefabAddress = "TilePrefab";
+    public const string TileStateLabel = "tile-state";
 
     // public GameManager GameManager;
     public GameObject tilePrefab;
@@ -14,14 +19,25 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles = new List<Tile>();
     private bool waiting = false;
 
+    private bool ready = false;
+    private AsyncOperationHandle<GameObject> tilePrefabHandle;
+    private AsyncOperationHandle<IList<TileState>> tileStatesHandle;
+    public bool IsReady => ready;
+
     private Vector2 startPos;
     private bool isSwiping = false;
     private const float minSwipeDistance = 100f;  // 小于这个距离算点击，不算滑动
     private Pooler tilePool;
     private const int k_StartingTilePoolSize = 16;
 
+    // 空单元格缓存，用于优化性能
+    private List<TileCell> emptyCellsCache = new List<TileCell>();
 
 
+
+    /// <summary>
+    /// 清空整个棋盘
+    /// </summary>
     public void ClearBoard()
     {
         foreach (var cell in grid.cells)
@@ -33,35 +49,68 @@ public class TileBoard : MonoBehaviour
         {
             tile.cell = null;
             this.tilePool.Free(tile.gameObject);
-            // Destroy(tile.gameObject);
         }
         tiles.Clear();
+
+        // 更新空单元格缓存
+        UpdateEmptyCellsCache();
     }
 
-    // 把低阶tile清除掉，避免占用空间
+    /// <summary>
+    /// 更新空单元格缓存
+    /// 在游戏初始化或主要操作后调用
+    /// </summary>
+    private void UpdateEmptyCellsCache()
+    {
+        emptyCellsCache.Clear();
+        foreach (var cell in grid.cells)
+        {
+            if (cell.IsEmpty())
+            {
+                emptyCellsCache.Add(cell);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 清除低阶的 tile，保留高阶的 tile，避免占用空间
+    /// 优化：只遍历已占用的单元格，而不是所有单元格
+    /// </summary>
     public void ClearLowTile()
     {
         waiting = false;
+
+        // 获取当前最大状态索引
+        int maxStateIndex = GameManager.Instance.getCreateStateIndex();
+        // 保留最高3个等级的 tile，清除更低的
+        int clearThreshold = Mathf.Max(maxStateIndex - 3, 3);
+
+        // 优化：只遍历已占用的单元格
         foreach (var cell in grid.cells)
         {
             Tile tile = cell.tile;
             if (tile == null) continue;
-            int idx = GameManager.Instance.getCreateStateIndex();
-            idx = Mathf.Max(idx - 3, 3);
-            if (tile.state.index <= idx)
+
+            // 如果 tile 的等级低于清除阈值，则清除它
+            if (tile.state.index <= clearThreshold)
             {
                 cell.tile = null;
                 tile.cell = null;
                 tiles.Remove(tile);
                 this.tilePool.Free(tile.gameObject);
-                // Destroy(tile.gameObject);
             }
         }
     }
 
+    /// <summary>
+    /// 释放 tile 对象
+    /// 优化：释放后更新空单元格缓存
+    /// </summary>
     public void FreeTile(GameObject tileObj)
     {
         this.tilePool.Free(tileObj);
+        // 优化：释放后更新空单元格缓存
+        UpdateEmptyCellsCache();
     }
 
     public void CreateTile()
@@ -112,6 +161,10 @@ public class TileBoard : MonoBehaviour
     // // Update is called once per frame
     private void Update()
     {
+        if (!ready)
+        {
+            return;
+        }
         if (waiting)
         {
             Debug.Log("waiting");
@@ -296,9 +349,76 @@ public class TileBoard : MonoBehaviour
         return true;
     }
 
-    void Awake()
+    /// <summary>
+    /// 异步加载 Tile 预制体和全部 TileState 配置。
+    /// 任一资源加载失败都会记录错误并停止初始化，避免带着空棋盘继续运行。
+    /// </summary>
+    public IEnumerator InitializeAsync()
     {
-        this.tilePool = new Pooler(tilePrefab, k_StartingTilePoolSize);
+        if (ready)
+        {
+            yield break;
+        }
 
+        yield return LoadTilePrefabAsync();
+        yield return LoadTileStatesAsync();
+
+        if (tilePrefab == null || tileStates == null || tileStates.Length == 0)
+        {
+            Debug.LogError("[TileBoard] Addressables 资源未就绪，棋盘无法初始化。");
+            yield break;
+        }
+
+        this.tilePool = new Pooler(tilePrefab, k_StartingTilePoolSize);
+        ready = true;
+    }
+
+    private IEnumerator LoadTilePrefabAsync()
+    {
+        tilePrefabHandle = Addressables.LoadAssetAsync<GameObject>(TilePrefabAddress);
+        yield return tilePrefabHandle;
+
+        if (tilePrefabHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            tilePrefab = tilePrefabHandle.Result;
+            Debug.Log("[TileBoard] 已通过 Addressables 加载 Tile 预制体。");
+        }
+        else
+        {
+            Debug.LogError($"[TileBoard] Tile 预制体加载失败，请检查地址 {TilePrefabAddress} 或先构建 Addressables 内容。");
+        }
+    }
+
+    private IEnumerator LoadTileStatesAsync()
+    {
+        tileStatesHandle = Addressables.LoadAssetsAsync<TileState>(TileStateLabel, null);
+        yield return tileStatesHandle;
+
+        if (tileStatesHandle.Status == AsyncOperationStatus.Succeeded
+            && tileStatesHandle.Result != null
+            && tileStatesHandle.Result.Count > 0)
+        {
+            // 标签加载不保证顺序，按 index 排序，保证 tileStates[index] 与方块等级一致。
+            List<TileState> loadedStates = new List<TileState>(tileStatesHandle.Result);
+            loadedStates.Sort((a, b) => a.index.CompareTo(b.index));
+            tileStates = loadedStates.ToArray();
+            Debug.Log($"[TileBoard] 已通过 Addressables 加载 {tileStates.Length} 个 TileState 配置。");
+        }
+        else
+        {
+            Debug.LogError($"[TileBoard] TileState 加载失败，请检查标签 {TileStateLabel} 或先构建 Addressables 内容。");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (tilePrefabHandle.IsValid())
+        {
+            Addressables.Release(tilePrefabHandle);
+        }
+        if (tileStatesHandle.IsValid())
+        {
+            Addressables.Release(tileStatesHandle);
+        }
     }
 }
