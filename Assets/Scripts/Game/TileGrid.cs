@@ -56,17 +56,35 @@ public class TileGrid : MonoBehaviour
         return GetCell(coordinates);
     }
     /// <summary>
-    /// 获取第一个空单元格
-    /// 顺序扫描并返回首个空格，无需为选取生成点维护额外的缓存列表
+    /// 获取一个随机空单元格作为新块的生成点
+    /// 两遍扫描：先数出空格总数，再取第 k 个空格，无额外内存分配
     /// </summary>
     /// <returns>空单元格或 null</returns>
-    public TileCell GetFirstEmptyCell()
+    public TileCell GetRandomEmptyCell()
     {
+        int emptyCount = 0;
         foreach (var cell in cells)
         {
             if (cell.IsEmpty())
             {
-                return cell;
+                emptyCount++;
+            }
+        }
+        if (emptyCount == 0)
+        {
+            return null;
+        }
+
+        int pick = Random.Range(0, emptyCount);
+        foreach (var cell in cells)
+        {
+            if (cell.IsEmpty())
+            {
+                if (pick == 0)
+                {
+                    return cell;
+                }
+                pick--;
             }
         }
         return null;

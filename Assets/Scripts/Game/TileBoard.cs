@@ -21,6 +21,9 @@ public class TileBoard : MonoBehaviour
     private const int k_StartingTilePoolSize = 16;
     private TileAssetProvider assetProvider = new TileAssetProvider();
 
+    // 合并中的配对：key 为正在飞向目标的 tile，value 为动画结束后要弹跳表现的升级 tile
+    private readonly Dictionary<GameObject, Tile> pendingMergePops = new Dictionary<GameObject, Tile>();
+
     private void Awake()
     {
         // 输入、动画完成、回收三类事件都由持有规则与流程状态的 TileBoard 统一订阅处理
@@ -52,6 +55,12 @@ public class TileBoard : MonoBehaviour
     /// </summary>
     private void OnTileMoveCompleted(GameObject tileObj)
     {
+        // 合并动画结束时，让升级后的目标块弹跳一下（与流程计数相互独立）
+        if (pendingMergePops.Remove(tileObj, out Tile merged))
+        {
+            merged.Pop();
+        }
+
         // 只统计由 Move 发起的动画；外部直接调用 MoveTo/Merge 产生的动画不驱动流程
         if (pendingMoves == 0)
         {
@@ -88,8 +97,9 @@ public class TileBoard : MonoBehaviour
     /// </summary>
     public void ClearBoard()
     {
-        // 动画中的 tile 被直接回收后不会再发完成事件，流程计数一并清零
+        // 动画中的 tile 被直接回收后不会再发完成事件，流程计数与合并弹跳配对一并清零
         pendingMoves = 0;
+        pendingMergePops.Clear();
 
         foreach (var cell in grid.cells)
         {
@@ -117,8 +127,9 @@ public class TileBoard : MonoBehaviour
     /// </summary>
     public void ClearLowTile()
     {
-        // 防御性清零：继续游戏时确保流程不卡在途状态
+        // 防御性清零：继续游戏时确保流程不卡在途状态，也清掉残留的弹跳配对
         pendingMoves = 0;
+        pendingMergePops.Clear();
 
         // 获取当前最大状态索引
         var gameModel = GameApp.Get<GameModel>();
@@ -162,7 +173,8 @@ public class TileBoard : MonoBehaviour
         int min = Mathf.Max(idx - 3, 0);
         tile.SetState(tileStates[Random.Range(min, idx)]); // 教程更新
         // }
-        tile.LinkCell(grid.GetFirstEmptyCell());
+        tile.LinkCell(grid.GetRandomEmptyCell());
+        tile.Spawn();
         tiles.Add(tile);
     }
     public void CreateTile(int x, int y, int stateIndex = 0)
@@ -175,6 +187,7 @@ public class TileBoard : MonoBehaviour
         tile.SetState(tileStates[stateIndex]);
         TileCell emptyCell = grid.GetCell(x, y);
         tile.LinkCell(emptyCell);
+        tile.Spawn();
         tiles.Add(tile);
     }
 
@@ -240,6 +253,8 @@ public class TileBoard : MonoBehaviour
     private void MergeTiles(Tile a, Tile b)
     {
         tiles.Remove(a);
+        // 记录配对：a 飞向目标格的动画结束后，b 弹跳表现升级
+        pendingMergePops[a.gameObject] = b;
         a.Merge(b.cell);
         int index = b.state.index;
         TileState newState = tileStates[index];

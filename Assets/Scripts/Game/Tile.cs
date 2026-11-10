@@ -88,4 +88,55 @@ public class Tile : MonoBehaviour
         }
         TileMoveCompletedEvent.Trigger(gameObject);
     }
+
+    /// <summary>
+    /// 出生表现：从 0 弹性放大到 1，纯视觉不影响流程
+    /// </summary>
+    public void Spawn()
+    {
+        transform.localScale = Vector3.zero;
+        StartCoroutine(SpawnAnimate());
+    }
+
+    /// <summary>
+    /// 合并升级后的表现：放大再回落，纯视觉不影响流程
+    /// </summary>
+    public void Pop()
+    {
+        StartCoroutine(PopAnimate());
+    }
+
+    private IEnumerator SpawnAnimate()
+    {
+        const float duration = 0.15f;
+        // easeOutBack：先冲过 1 再回落，出生感更有弹性
+        const float c1 = 1.70158f;
+        const float c3 = c1 + 1f;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float t = Mathf.Clamp01(elapsed / duration);
+            float scale = 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
+            transform.localScale = Vector3.one * scale;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = Vector3.one;
+    }
+
+    private IEnumerator PopAnimate()
+    {
+        const float duration = 0.15f;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float t = Mathf.Clamp01(elapsed / duration);
+            transform.localScale = Vector3.one * (1f + 0.2f * Mathf.Sin(t * Mathf.PI));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = Vector3.one;
+    }
 }
