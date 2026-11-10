@@ -64,15 +64,32 @@
     <Analyzer Include="/Applications/Tuanjie/Hub/Editor/2022.3.62t11/Tuanjie.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets/Scripts/Command/AddScoreCommand.cs" />
     <Compile Include="Assets/tile.cs" />
-    <Compile Include="Assets/Scripts/Pooler.cs" />
-    <Compile Include="Assets/Scripts/Tile.cs" />
-    <Compile Include="Assets/Scripts/TileCell.cs" />
-    <Compile Include="Assets/Scripts/GameManager.cs" />
-    <Compile Include="Assets/Scripts/TileBoard.cs" />
-    <Compile Include="Assets/Scripts/TileGrid.cs" />
-    <Compile Include="Assets/Scripts/TileRow.cs" />
-    <Compile Include="Assets/Scripts/TileState.cs" />
+    <Compile Include="Assets/Scripts/Game/TileInput.cs" />
+    <Compile Include="Assets/Scripts/Game/Tile.cs" />
+    <Compile Include="Assets/Scripts/Game/TileCell.cs" />
+    <Compile Include="Assets/Scripts/Game/TileRow.cs" />
+    <Compile Include="Assets/Scripts/Config/TileState.cs" />
+    <Compile Include="Assets/Scripts/Game/TileGrid.cs" />
+    <Compile Include="Assets/Scripts/Framework/Command/ICommand.cs" />
+    <Compile Include="Assets/Scripts/Event/TileInputEvent.cs" />
+    <Compile Include="Assets/Scripts/Framework/Architecture/Architecture.cs" />
+    <Compile Include="Assets/Scripts/Event/TileRecycleEvent.cs" />
+    <Compile Include="Assets/Scripts/GameApp.cs" />
+    <Compile Include="Assets/Scripts/Event/TileMoveCompletedEvent.cs" />
+    <Compile Include="Assets/Scripts/Command/ResetScoreCommand.cs" />
+    <Compile Include="Assets/Scripts/GameViewControl.cs" />
+    <Compile Include="Assets/Scripts/Framework/Pool/Pooler.cs" />
+    <Compile Include="Assets/Scripts/Framework/Singleton/Singleton.cs" />
+    <Compile Include="Assets/Scripts/Command/InitBestScoreCommand.cs" />
+    <Compile Include="Assets/Scripts/Framework/Event/Event.cs" />
+    <Compile Include="Assets/Scripts/Model/GameModel.cs" />
+    <Compile Include="Assets/Scripts/Event/GameOverEvent.cs" />
+    <Compile Include="Assets/Scripts/Framework/Bind/BindableProperty.cs" />
+    <Compile Include="Assets/Scripts/Game/TileBoard.cs" />
+    <Compile Include="Assets/Scripts/Game/TileAssetProvider.cs" />
+    <Compile Include="Assets/Scripts/Framework/IOC/IOCContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
@@ -90,7 +107,6 @@
     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc" />
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc" />
-    <None Include="Assets/Fonts/common_black_fnt.fnt" />
     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader" />

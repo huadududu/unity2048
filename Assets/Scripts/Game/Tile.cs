@@ -40,9 +40,6 @@ public class Tile : MonoBehaviour
         this.cell = cell;
         this.cell.tile = this;
         transform.position = cell.transform.position;
-
-        // Debug.LogFormat("test postion:{0}, {1}", transform.position.x, transform.position.y);
-        // Debug.LogFormat("test postion:{0}", transform.position.x);
     }
 
     public void MoveTo(TileCell cell)
@@ -87,20 +84,8 @@ public class Tile : MonoBehaviour
         transform.position = to;
         if (merging)
         {
-            GameManager.Instance.board.FreeTile(gameObject);
-            // Destroy(gameObject);
+            TileRecycleEvent.Trigger(gameObject);
         }
+        TileMoveCompletedEvent.Trigger(gameObject);
     }
-
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-
-    // }
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-
-    // }
 }

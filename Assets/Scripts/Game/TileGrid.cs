@@ -56,12 +56,11 @@ public class TileGrid : MonoBehaviour
         return GetCell(coordinates);
     }
     /// <summary>
-    /// 获取一个随机空单元格
-    /// 为了性能优化，直接返回第一个空单元格，而不是创建列表
-    /// 在游戏运行过程中，空单元格数量会越来越少，返回第一个空单元格效率更高
+    /// 获取第一个空单元格
+    /// 顺序扫描并返回首个空格，无需为选取生成点维护额外的缓存列表
     /// </summary>
     /// <returns>空单元格或 null</returns>
-    public TileCell getRandomEmptyCell()
+    public TileCell GetFirstEmptyCell()
     {
         foreach (var cell in cells)
         {
