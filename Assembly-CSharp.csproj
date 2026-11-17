@@ -64,32 +64,41 @@
     <Analyzer Include="/Applications/Tuanjie/Hub/Editor/2022.3.62t11/Tuanjie.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets/Scripts/Command/AddScoreCommand.cs" />
-    <Compile Include="Assets/tile.cs" />
-    <Compile Include="Assets/Scripts/Game/TileInput.cs" />
-    <Compile Include="Assets/Scripts/Game/Tile.cs" />
-    <Compile Include="Assets/Scripts/Game/TileCell.cs" />
-    <Compile Include="Assets/Scripts/Game/TileRow.cs" />
-    <Compile Include="Assets/Scripts/Config/TileState.cs" />
-    <Compile Include="Assets/Scripts/Game/TileGrid.cs" />
-    <Compile Include="Assets/Scripts/Framework/Command/ICommand.cs" />
-    <Compile Include="Assets/Scripts/Event/TileInputEvent.cs" />
-    <Compile Include="Assets/Scripts/Framework/Architecture/Architecture.cs" />
-    <Compile Include="Assets/Scripts/Event/TileRecycleEvent.cs" />
-    <Compile Include="Assets/Scripts/GameApp.cs" />
-    <Compile Include="Assets/Scripts/Event/TileMoveCompletedEvent.cs" />
-    <Compile Include="Assets/Scripts/Command/ResetScoreCommand.cs" />
-    <Compile Include="Assets/Scripts/GameViewControl.cs" />
-    <Compile Include="Assets/Scripts/Framework/Pool/Pooler.cs" />
-    <Compile Include="Assets/Scripts/Framework/Singleton/Singleton.cs" />
-    <Compile Include="Assets/Scripts/Command/InitBestScoreCommand.cs" />
-    <Compile Include="Assets/Scripts/Framework/Event/Event.cs" />
-    <Compile Include="Assets/Scripts/Model/GameModel.cs" />
-    <Compile Include="Assets/Scripts/Event/GameOverEvent.cs" />
-    <Compile Include="Assets/Scripts/Framework/Bind/BindableProperty.cs" />
-    <Compile Include="Assets/Scripts/Game/TileBoard.cs" />
-    <Compile Include="Assets/Scripts/Game/TileAssetProvider.cs" />
-    <Compile Include="Assets/Scripts/Framework/IOC/IOCContainer.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/Model/SnakeModel.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game/TileBoard.cs" />
+    <Compile Include="Assets/Core/Framework/Singleton/Singleton.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Command/InitBestScoreCommand.cs" />
+    <Compile Include="Assets/Core/Framework/Event/Event.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Config/TileState.cs" />
+    <Compile Include="Assets/Core/Framework/Bind/BindableProperty.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game/TileGrid.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game/TileCell.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game/Tile.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/Snake.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Model/GameModel.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Event/GameOverEvent.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/Command/AddScoreCommand.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Event/TileMoveCompletedEvent.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/GameViewControl.cs" />
+    <Compile Include="Assets/Common/Scripts/DirectionInput.cs" />
+    <Compile Include="Assets/Core/Framework/IOC/IOCContainer.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Command/ResetScoreCommand.cs" />
+    <Compile Include="Assets/Common/Scripts/DirectionInputEvent.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/SnakeGame.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game/TileRow.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/Food.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/SnakeViewControl.cs" />
+    <Compile Include="Assets/Core/Framework/Command/ICommand.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/Command/InitBestScoreCommand.cs" />
+    <Compile Include="Assets/Common/Scripts/LoadSceneButton.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Command/AddScoreCommand.cs" />
+    <Compile Include="Assets/Core/Framework/Pool/Pooler.cs" />
+    <Compile Include="Assets/Core/Framework/Architecture/Architecture.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/Command/ResetScoreCommand.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game2048.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Game/TileAssetProvider.cs" />
+    <Compile Include="Assets/Games/Snake/Scripts/SnakeCameraFit.cs" />
+    <Compile Include="Assets/Games/Game2048/Scripts/Event/TileRecycleEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
@@ -98,15 +107,16 @@
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets/WX-WASM-SDK-V2/Runtime/Plugins/link.xml" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader" />
     <None Include="Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF.shader" />
+    <None Include="Assets/WX-WASM-SDK-V2/Runtime/Plugins/link.xml" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc" />
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc" />
+    <None Include="Assets/Codely/Fonts/NotoSansSC-OFL.txt" />
     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader" />
@@ -473,7 +483,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Codely.Newtonsoft.Json">
-      <HintPath>Library/PackageCache/cn.tuanjie.codely.bridge@1.0.87/Plugins/Codely.Newtonsoft.Json.dll</HintPath>
+      <HintPath>Library/PackageCache/cn.tuanjie.codely.bridge@1.0.91/Plugins/Codely.Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

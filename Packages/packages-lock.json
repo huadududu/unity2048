@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.qq.weixin.minigame": {
+      "version": "https://gitee.com/wechat-minigame/minigame-tuanjie-transform-sdk.git#v0.1.32",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f67e7851c345f514e9079819cae16273ff05b33c"
+    },
     "cn.tuanjie.ai.generators": {
       "version": "file:../.codely-cli/extensions/TJGenerators/Packages/cn.tuanjie.ai.generators",
       "depth": 0,
@@ -13,7 +20,7 @@
       }
     },
     "cn.tuanjie.codely.bridge": {
-      "version": "1.0.87",
+      "version": "1.0.91",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -21,13 +28,6 @@
         "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.tuanjie.cn"
-    },
-    "com.qq.weixin.minigame": {
-      "version": "https://gitee.com/wechat-minigame/minigame-tuanjie-transform-sdk.git#v0.1.32",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "f67e7851c345f514e9079819cae16273ff05b33c"
     },
     "com.unity.2d.animation": {
       "version": "9.2.0",

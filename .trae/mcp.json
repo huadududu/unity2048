@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "unity-codely-bridge": {
+      "command": "/Users/1234aa/Library/Application Support/Tuanjie Cowork/bin/codely",
+      "args": [
+        "serve",
+        "unity-mcp",
+        "--stdio",
+        "--unity-project-path",
+        "${workspaceFolder}"
+      ]
+    }
+  }
+}
